@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const { password } = await request.json();
 
-  if (password === process.env.APP_PASSWORD) {
+  const correctPassword = process.env.APP_PASSWORD || "three2024";
+  if (password === correctPassword) {
     const res = NextResponse.json({ ok: true });
     res.cookies.set("auth", "OK", {
       httpOnly: true,
