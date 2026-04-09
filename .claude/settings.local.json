@@ -11,7 +11,8 @@
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
       "Bash(ls /Users/shinjiro/Downloads/THREE*)",
-      "Bash(ls /Users/shinjiro/Desktop/THREE*)"
+      "Bash(ls /Users/shinjiro/Desktop/THREE*)",
+      "Bash(git add:*)"
     ]
   }
 }
