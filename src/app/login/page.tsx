@@ -1,82 +1,70 @@
 "use client";
-
 import { useState } from "react";
 
 export default function LoginPage() {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-
-    if (res.ok) {
-      window.location.href = "/";
-    } else {
-      setError("パスワードが正しくありません");
+  async function handleLogin() {
+    setErr("");
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pw }),
+      });
+      if (res.ok) {
+        window.location.href = "/";
+      } else {
+        setErr("パスワードが正しくありません");
+      }
+    } catch {
+      setErr("エラーが発生しました");
     }
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#fff",
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          width: "320px",
-        }}
-      >
-        <h1 style={{ textAlign: "center", fontSize: "24px", color: "#333" }}>
-          パスワードを入力
-        </h1>
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "100vh",
+      background: "#fff"
+    }}>
+      <div style={{ width: "300px", textAlign: "center" }}>
+        <h2 style={{ marginBottom: "20px" }}>パスワードを入力</h2>
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleLogin()}
           placeholder="パスワード"
           style={{
-            padding: "12px",
-            fontSize: "16px",
+            width: "100%",
+            padding: "10px",
             border: "1px solid #ccc",
             borderRadius: "6px",
+            fontSize: "16px",
+            marginBottom: "10px"
           }}
         />
-        {error && (
-          <p style={{ color: "red", margin: 0, textAlign: "center" }}>
-            {error}
-          </p>
-        )}
+        {err && <p style={{ color: "red", marginBottom: "10px" }}>{err}</p>}
         <button
-          type="submit"
+          onClick={handleLogin}
           style={{
+            width: "100%",
             padding: "12px",
-            fontSize: "16px",
-            backgroundColor: "#006400",
-            color: "#fff",
+            background: "#006400",
+            color: "white",
             border: "none",
             borderRadius: "6px",
-            cursor: "pointer",
+            fontSize: "16px",
+            cursor: "pointer"
           }}
         >
           ログイン
         </button>
-      </form>
+      </div>
     </div>
   );
 }

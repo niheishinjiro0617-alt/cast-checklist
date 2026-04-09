@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const { password } = await request.json();
+  const body = await request.json();
+  const password = body.password;
   const correct = process.env.APP_PASSWORD ?? "three2024";
-
-  console.log("received:", password);
-  console.log("correct:", correct);
-  console.log("match:", password === correct);
-
   if (password === correct) {
     const res = NextResponse.json({ ok: true });
     res.cookies.set("auth", "OK", {
